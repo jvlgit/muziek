@@ -1,8 +1,10 @@
 package be.vdab.muziek.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Table(name = "artiesten")
@@ -18,4 +20,13 @@ public class Artiest {
     public String getNaam() {
         return naam;
     }
+
+    public Set<Album> getAlbums() {
+        return Collections.unmodifiableSet(albums);
+    }
+
+    @OneToMany(mappedBy = "artiest") @OrderBy("naam")
+    private Set<Album> albums;
+
+
 }

@@ -5,19 +5,20 @@ import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Embeddable
 @Access(AccessType.FIELD)
 public class Track {
     private String naam;
-    private Time tijd;
+    private LocalTime tijd;
 
     public String getNaam() {
         return naam;
     }
 
-    public Time getTijd() {
+    public LocalTime getTijd() {
         return tijd;
     }
 

@@ -2,6 +2,7 @@ package be.vdab.muziek.domain;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Set;
 
@@ -13,17 +14,47 @@ public class Album {
     private String naam;
     private int jaar;
     private long barcode;
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     private int score;
+
+
+
+
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "artiestId")
-    @JoinColumn(name = "labelId")
     private Artiest artiest;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "labelId")
+    private Label label;
+
+    public Label getLabel() {
+        return label;
+    }
 
     @ElementCollection
     @CollectionTable(name = "tracks",
     joinColumns = @JoinColumn(name = "albumId"))
     private Set<Track> tracks;
+
+    public LocalTime getTijd() {
+        var albumTijd = LocalTime.MIN;
+        for(var track : tracks) {
+            var trackTijd = track.getTijd();
+            albumTijd = albumTijd.plusHours(trackTijd.getHour())
+                    .plusMinutes(trackTijd.getMinute())
+                    .plusSeconds(trackTijd.getSecond());
+
+        }
+        return albumTijd;
+    }
+
+
 
 
 
@@ -65,4 +96,6 @@ public class Album {
     public Set<Track> getTracks() {
         return Collections.unmodifiableSet(tracks);
     }
+
+
 }
